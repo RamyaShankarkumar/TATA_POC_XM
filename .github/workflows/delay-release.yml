@@ -1,8 +1,12 @@
 name: Delay Release
 
 on:
-  repository_dispatch:
-    types: [delay-release]
+  workflow_dispatch:
+    inputs:
+      delay_minutes:
+        description: "Delay in minutes"
+        required: true
+        default: "20"
 
 permissions:
   contents: write
@@ -14,13 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update delay value
+      - name: Update delay config
         run: |
-          NEW_DELAY=${{ github.event.client_payload.delay }}
+          DELAY_SECONDS=$(( ${{ inputs.delay_minutes }} * 60 ))
 
-          echo "Setting delay to $NEW_DELAY seconds"
+          echo "Updating delay to $DELAY_SECONDS seconds"
 
-          jq ".delaySeconds = $NEW_DELAY" release-config.json > tmp.json
+          jq ".delaySeconds = $DELAY_SECONDS" release-config.json > tmp.json
           mv tmp.json release-config.json
 
       - name: Commit update
@@ -29,5 +33,5 @@ jobs:
           git config user.email "github-actions@github.com"
 
           git add release-config.json
-          git commit -m "chore: update release delay to $NEW_DELAY"
+          git commit -m "chore: delay release by ${{ inputs.delay_minutes }} min"
           git push
