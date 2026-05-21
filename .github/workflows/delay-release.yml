@@ -1,0 +1,8 @@
+name: Delay Release
+
+on:
+  repository_dispatch:
+    types: [delay-release]
+
+permissions:
+  contents: write
