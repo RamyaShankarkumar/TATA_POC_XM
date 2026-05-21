@@ -45,7 +45,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          git add release-config.json
+          git add docs/data/release-config.json
 
           git diff --cached --quiet && echo "No changes" && exit 0
 
