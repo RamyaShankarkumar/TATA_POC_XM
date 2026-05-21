@@ -24,12 +24,19 @@ jobs:
 
       - name: Update delay config
         run: |
-          if [ ! -f release-config.json ]; then
-            echo '{"delaySeconds": 0}' > release-config.json
+          CONFIG_FILE="docs/data/release-config.json"
+
+          # Ensure folder exists
+          mkdir -p docs/data
+
+          # Create file if missing
+          if [ ! -f "$CONFIG_FILE" ]; then
+            echo '{"delaySeconds": 0}' > "$CONFIG_FILE"
           fi
 
-          jq ".delaySeconds = $DELAY_SECONDS" release-config.json > tmp.json
-          mv tmp.json release-config.json
+          # Update value
+          jq ".delaySeconds = $DELAY_SECONDS" "$CONFIG_FILE" > tmp.json
+          mv tmp.json "$CONFIG_FILE"
 
           echo "Updated delay to $DELAY_SECONDS seconds"
 
