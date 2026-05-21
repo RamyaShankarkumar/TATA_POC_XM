@@ -122,11 +122,16 @@ jobs:
         run: |
           CONFIG_FILE="docs/data/release-config.json"
 
+          # 1. Ensure folder exists FIRST
+          mkdir -p docs/data
+
+          # 2. Create file if missing
           if [ ! -f "$CONFIG_FILE" ]; then
             echo "File not found, creating default config"
             echo '{"delaySeconds":1200}' > "$CONFIG_FILE"
           fi
 
+          # 3. Read value safely
           DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
 
           echo "Current delay: $DELAY seconds"
