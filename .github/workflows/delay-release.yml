@@ -6,3 +6,28 @@ on:
 
 permissions:
   contents: write
+
+jobs:
+  delay:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update delay value
+        run: |
+          NEW_DELAY=${{ github.event.client_payload.delay }}
+
+          echo "Setting delay to $NEW_DELAY seconds"
+
+          jq ".delaySeconds = $NEW_DELAY" release-config.json > tmp.json
+          mv tmp.json release-config.json
+
+      - name: Commit update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add release-config.json
+          git commit -m "chore: update release delay to $NEW_DELAY"
+          git push
