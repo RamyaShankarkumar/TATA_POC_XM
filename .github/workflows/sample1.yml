@@ -101,6 +101,11 @@ jobs:
                         type: "Action.OpenUrl",
                         title: "View Workflow",
                         url: $run
+                      },
+                      {
+                        "type": "Action.OpenUrl",
+                        "title": "⏸ Delay Release 20 min",
+                        "url": "https://api.github.com/repos/RamyaShankarkumar/TATA_POC_XM/dispatches"
                       }
                     ]
                   }
