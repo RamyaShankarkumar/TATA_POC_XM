@@ -105,7 +105,7 @@ jobs:
                       {
                         "type": "Action.OpenUrl",
                         "title": "⏸ Delay Release 20 min",
-                        "url": "https://api.github.com/repos/RamyaShankarkumar/TATA_POC_XM/dispatches"
+                        "url": "https://github.com/RamyaShankarkumar/TATA_POC_XM/actions/workflows/delay-release.yml"
                       }
                     ]
                   }
