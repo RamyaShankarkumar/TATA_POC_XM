@@ -117,6 +117,34 @@ jobs:
             --header "Content-Type: application/json" \
             --data @payload.json
 
+      - name: Wait for Delay Trigger Window (3 min)
+        run: |
+          CONFIG_FILE="docs/data/release-config.json"
+
+          mkdir -p docs/data
+
+          # Ensure file exists with default
+          if [ ! -f "$CONFIG_FILE" ]; then
+            echo '{"delaySeconds":0}' > "$CONFIG_FILE"
+          fi
+
+          echo "Waiting 3 minutes for delay trigger..."
+
+          # Wait 3 minutes
+          sleep 20
+
+          # Read delay AFTER waiting
+          DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
+
+          echo "Delay configured: $DELAY seconds"
+
+          if [ "$DELAY" -gt 0 ]; then
+            echo "Applying delay of $DELAY seconds..."
+            sleep "$DELAY"
+          else
+            echo "No delay triggered. Continuing normally."
+          fi
+
       # ✅ Initial Release Hold
       - name: Initial Release Hold (dynamic delay)
         run: |
