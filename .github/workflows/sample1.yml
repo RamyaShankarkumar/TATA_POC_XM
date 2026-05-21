@@ -113,8 +113,12 @@ jobs:
             --data @payload.json
 
       # ✅ Initial Release Hold
-      - name: Initial Release Hold
-        run: sleep 10
+      - name: Initial Release Hold (dynamic delay)
+        run: |
+          DELAY=$(jq -r '.delaySeconds' release-config.json)
+
+          echo "Current delay: $DELAY seconds"
+          sleep $DELAY
 
       # ✅ Refresh branch after hotfix merges
       - name: Refresh sprint branch
