@@ -464,8 +464,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Check out master in a sibling worktree folder
-          git fetch origin master
-          git worktree add "$REPO_DIR/../master-worktree" origin/master
+          git fetch origin main
+          git worktree add "$REPO_DIR/../main-worktree" origin/main
 
           # Copy docs/ CONTENTS (trailing slash + dot) — avoids docs/docs/ double-nesting
           mkdir -p "$REPO_DIR/../master-worktree/docs"
