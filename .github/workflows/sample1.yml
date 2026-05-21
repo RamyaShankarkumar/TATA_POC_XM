@@ -120,10 +120,17 @@ jobs:
       # ✅ Initial Release Hold
       - name: Initial Release Hold (dynamic delay)
         run: |
-          DELAY=$(jq -r '.delaySeconds' release-config.json)
+          CONFIG_FILE="docs/data/release-config.json"
+
+          if [ ! -f "$CONFIG_FILE" ]; then
+            echo "File not found, creating default config"
+            echo '{"delaySeconds":1200}' > "$CONFIG_FILE"
+          fi
+
+          DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
 
           echo "Current delay: $DELAY seconds"
-          sleep $DELAY
+          sleep "$DELAY"
 
       # ✅ Refresh branch after hotfix merges
       - name: Refresh sprint branch
