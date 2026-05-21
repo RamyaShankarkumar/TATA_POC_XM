@@ -18,14 +18,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set delay value
+        run: |
+          echo "DELAY_SECONDS=$(( ${{ inputs.delay_minutes }} * 60 ))" >> $GITHUB_ENV
+
       - name: Update delay config
         run: |
-          DELAY_SECONDS=$(( ${{ inputs.delay_minutes }} * 60 ))
-
-          echo "Updating delay to $DELAY_SECONDS seconds"
+          if [ ! -f release-config.json ]; then
+            echo '{"delaySeconds": 0}' > release-config.json
+          fi
 
           jq ".delaySeconds = $DELAY_SECONDS" release-config.json > tmp.json
           mv tmp.json release-config.json
+
+          echo "Updated delay to $DELAY_SECONDS seconds"
 
       - name: Commit update
         run: |
@@ -33,5 +39,8 @@ jobs:
           git config user.email "github-actions@github.com"
 
           git add release-config.json
+
+          git diff --cached --quiet && echo "No changes" && exit 0
+
           git commit -m "chore: delay release by ${{ inputs.delay_minutes }} min"
           git push
