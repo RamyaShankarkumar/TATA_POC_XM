@@ -1,0 +1,31 @@
+name: Delay Trigger Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      delaySeconds:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call existing delay workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/delay-release.yml/dispatches \
+            -d "{
+              \"ref\": \"${{ github.event.inputs.branch }}\",
+              \"inputs\": {
+                \"delaySeconds\": \"${{ github.event.inputs.delaySeconds }}\"
+              }
+            }"
