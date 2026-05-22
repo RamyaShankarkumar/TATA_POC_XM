@@ -157,25 +157,25 @@ jobs:
             echo "No delay triggered. Continuing normally."
           fi
 
-      # ✅ Initial Release Hold
-      - name: Initial Release Hold (dynamic delay)
-        run: |
-          CONFIG_FILE="docs/data/release-config.json"
+      # # ✅ Initial Release Hold
+      # - name: Initial Release Hold (dynamic delay)
+      #   run: |
+      #     CONFIG_FILE="docs/data/release-config.json"
 
-          # 1. Ensure folder exists FIRST
-          mkdir -p docs/data
+      #     # 1. Ensure folder exists FIRST
+      #     mkdir -p docs/data
 
-          # 2. Create file if missing
-          if [ ! -f "$CONFIG_FILE" ]; then
-            echo "File not found, creating default config"
-            echo '{"delaySeconds":1200}' > "$CONFIG_FILE"
-          fi
+      #     # 2. Create file if missing
+      #     if [ ! -f "$CONFIG_FILE" ]; then
+      #       echo "File not found, creating default config"
+      #       echo '{"delaySeconds":1200}' > "$CONFIG_FILE"
+      #     fi
 
-          # 3. Read value safely
-          DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
+      #     # 3. Read value safely
+      #     DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
 
-          echo "Current delay: $DELAY seconds"
-          sleep "$DELAY"
+      #     echo "Current delay: $DELAY seconds"
+      #     sleep "$DELAY"
 
       # ✅ Refresh branch after hotfix merges
       - name: Refresh sprint branch
