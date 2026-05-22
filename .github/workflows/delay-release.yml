@@ -20,7 +20,7 @@ jobs:
 
       - name: Set delay value
         run: |
-          echo "DELAY_SECONDS=$(( ${{ inputs.delay_minutes }} * 60 ))" >> $GITHUB_ENV
+          echo "DELAY_SECONDS=${{ inputs.delaySeconds }}" >> $GITHUB_ENV
 
       - name: Update delay config
         run: |
