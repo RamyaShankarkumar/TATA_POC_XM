@@ -105,7 +105,7 @@ jobs:
                       {
                         "type": "Action.OpenUrl",
                         "title": "⏸ Delay Release 20 min",
-                        "url": "https://github.com/RamyaShankarkumar/TATA_POC_XM/actions/workflows/delay-release.yml"
+                        "url": "https://api.github.com/repos/RamyaShankarkumar/TATA_POC_XM/actions/workflows/delay-release.yml/dispatches"
                       }
                     ]
                   }
@@ -134,7 +134,19 @@ jobs:
           sleep 20
 
           # Read delay AFTER waiting
-          DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
+          #DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
+          echo "Waiting 3 minutes for delay trigger..."
+          for i in {1..18}; do
+            DELAY=$(jq -r '.delaySeconds' docs/data/release-config.json 2>/dev/null || echo 0)
+            echo "Check $i → delay = $DELAY"
+
+            if [ "$DELAY" -gt 0 ]; then
+              echo "Delay detected → sleeping $DELAY seconds"
+              sleep "$DELAY"
+              break
+            fi
+            sleep 10
+          done
 
           echo "Delay configured: $DELAY seconds"
 
