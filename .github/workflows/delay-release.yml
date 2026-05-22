@@ -3,10 +3,10 @@ name: Delay Release
 on:
   workflow_dispatch:
     inputs:
-      delay_minutes:
-        description: "Delay in minutes"
+       delaySeconds:
+        description: "Delay in seconds"
         required: true
-        default: "20"
+        type: string
 
 permissions:
   contents: write
