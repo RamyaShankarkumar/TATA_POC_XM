@@ -147,7 +147,6 @@ jobs:
 
             if [ "$DELAY" -gt 0 ]; then
               echo "Delay detected → sleeping $DELAY seconds"
-              sleep "$DELAY"
               break
             fi
             sleep 10
