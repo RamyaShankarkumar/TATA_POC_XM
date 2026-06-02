@@ -136,7 +136,7 @@ jobs:
           # Read delay AFTER waiting
           #DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
           echo "Waiting 3 minutes for delay trigger..."
-          for i in {1..12}; do
+          for i in {1..6}; do
             DELAY=$(jq -r '.delaySeconds' docs/data/release-config.json 2>/dev/null || echo 0)
             echo "Check $i → delay = $DELAY"
 
