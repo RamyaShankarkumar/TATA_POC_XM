@@ -168,7 +168,7 @@ jobs:
       #     # 2. Create file if missing
       #     if [ ! -f "$CONFIG_FILE" ]; then
       #       echo "File not found, creating default config"
-      #       echo '{"delaySeconds":1200}' > "$CONFIG_FILE"
+      #       echo '{"delaySeconds":120}' > "$CONFIG_FILE"
       #     fi
 
       #     # 3. Read value safely
