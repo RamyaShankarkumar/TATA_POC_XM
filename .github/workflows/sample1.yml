@@ -173,10 +173,11 @@ jobs:
 
           git commit -m "chore: reset release delay"
 
-          git fetch origin
-          git rebase origin/${{ github.event.inputs.sprint_branch }}
+          git fetch origin main
+          git checkout main
+          git rebase origin/main
 
-          git push origin HEAD:${{ github.event.inputs.sprint_branch }}
+          git push origin main
 
       # # ✅ Initial Release Hold
       # - name: Initial Release Hold (dynamic delay)
