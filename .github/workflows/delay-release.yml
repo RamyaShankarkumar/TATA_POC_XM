@@ -15,7 +15,7 @@ jobs:
 
       - name: Set fixed delay
         run: |
-          DELAY_SECONDS=1200   # 20 minutes
+          DELAY_SECONDS=120   # 20 minutes
 
       - name: Update delay config
         run: |
@@ -27,7 +27,7 @@ jobs:
             echo '{"delaySeconds": 0}' > "$CONFIG_FILE"
           fi
 
-          jq ".delaySeconds = 1200" "$CONFIG_FILE" > tmp.json
+          jq ".delaySeconds = 120" "$CONFIG_FILE" > tmp.json
           mv tmp.json "$CONFIG_FILE"
 
           echo "Delay set to 1200 seconds (20 minutes)"
