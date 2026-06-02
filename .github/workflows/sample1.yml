@@ -129,13 +129,6 @@ jobs:
           fi
 
           echo "Waiting 3 minutes for delay trigger..."
-
-          # Wait 3 minutes
-          sleep 20
-
-          # Read delay AFTER waiting
-          #DELAY=$(jq -r '.delaySeconds' "$CONFIG_FILE")
-          echo "Waiting 3 minutes for delay trigger..."
           for i in {1..6}; do
             echo "Refreshing repo..."
 
