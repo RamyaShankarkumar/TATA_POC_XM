@@ -42,4 +42,6 @@ jobs:
           git diff --cached --quiet && echo "No changes" && exit 0
 
           git commit -m "chore: delay release by 20 min"
-          git push
+
+          git pull origin main --rebase
+          git push origin main
