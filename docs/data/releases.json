@@ -1,9 +1,9 @@
 {
   "releases": [
     {
-      "tag": "release/1.0.33",
+      "tag": "release/1.0.34",
       "branch": "release/1.0.x",
-      "date": "2026-06-02T19:24:54Z",
+      "date": "2026-06-02T22:06:33Z",
       "confluence": "https://ramyashankar2611.atlassian.net//pages/viewpage.action?pageId=163842",
       "ticket_count": 0,
       "tickets_done": 0,
