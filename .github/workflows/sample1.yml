@@ -158,6 +158,10 @@ jobs:
           echo "Resetting delaySeconds to 0..."
 
           CONFIG_FILE="docs/data/release-config.json"
+
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
           
           jq '.delaySeconds = 0' "$CONFIG_FILE" > tmp.json && mv tmp.json "$CONFIG_FILE"
 
@@ -172,11 +176,6 @@ jobs:
           fi
 
           git commit -m "chore: reset release delay"
-
-          git fetch origin main
-          git checkout main
-          git rebase origin/main
-
           git push origin main
 
       # # ✅ Initial Release Hold
