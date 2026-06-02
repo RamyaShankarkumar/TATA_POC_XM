@@ -1,12 +1,7 @@
 name: Delay Release
 
 on:
-  workflow_dispatch:
-    inputs:
-       delaySeconds:
-        description: "Delay in seconds"
-        required: true
-        type: string
+  workflow_dispatch   # no inputs
 
 permissions:
   contents: write
@@ -18,27 +13,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set delay value
+      - name: Set fixed delay
         run: |
-          echo "DELAY_SECONDS=${{ inputs.delaySeconds }}" >> $GITHUB_ENV
+          DELAY_SECONDS=1200   # 20 minutes
 
       - name: Update delay config
         run: |
           CONFIG_FILE="docs/data/release-config.json"
 
-          # Ensure folder exists
           mkdir -p docs/data
 
-          # Create file if missing
           if [ ! -f "$CONFIG_FILE" ]; then
             echo '{"delaySeconds": 0}' > "$CONFIG_FILE"
           fi
 
-          # Update value
-          jq ".delaySeconds = $DELAY_SECONDS" "$CONFIG_FILE" > tmp.json
+          jq ".delaySeconds = 1200" "$CONFIG_FILE" > tmp.json
           mv tmp.json "$CONFIG_FILE"
 
-          echo "Updated delay to $DELAY_SECONDS seconds"
+          echo "Delay set to 1200 seconds (20 minutes)"
 
       - name: Commit update
         run: |
@@ -49,5 +41,5 @@ jobs:
 
           git diff --cached --quiet && echo "No changes" && exit 0
 
-          git commit -m "chore: delay release by ${{ inputs.delaySeconds }} seconds"
+          git commit -m "chore: delay release by 20 min"
           git push
