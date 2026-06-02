@@ -551,7 +551,7 @@ jobs:
 
           # Copy docs/ CONTENTS (trailing slash + dot) — avoids docs/docs/ double-nesting
           mkdir -p "$REPO_DIR/../main-worktree/docs"
-          cp -r "$REPO_DIR/docs/." "$REPO_DIR/../main-worktree/docs/"
+          cp "$REPO_DIR/docs/data/releases.json" "$REPO_DIR/../main-worktree/docs/data/"
 
           # Commit and push from inside the worktree — stay in REPO_DIR for cleanup
           cd "$REPO_DIR/../main-worktree"
