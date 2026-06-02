@@ -168,10 +168,15 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No reset needed"
-          else
-            git commit -m "chore: reset release delay"
-            git push origin HEAD:${{ github.event.inputs.sprint_branch }}
+            exit 0
           fi
+
+          git commit -m "chore: reset release delay"
+
+          git fetch origin
+          git rebase origin/${{ github.event.inputs.sprint_branch }}
+
+          git push origin HEAD:${{ github.event.inputs.sprint_branch }}
 
       # # ✅ Initial Release Hold
       # - name: Initial Release Hold (dynamic delay)
