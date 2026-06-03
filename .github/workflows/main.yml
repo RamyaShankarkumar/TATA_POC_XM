@@ -120,23 +120,29 @@ jobs:
       - name: Wait for Delay Trigger Window (3 min)
         run: |
           CONFIG_FILE="docs/data/release-config.json"
-
-          mkdir -p docs/data
+          DELAY=0
 
           # Ensure file exists with default
-          if [ ! -f "$CONFIG_FILE" ]; then
-            echo '{"delaySeconds":0}' > "$CONFIG_FILE"
-          fi
+          #if [ ! -f "$CONFIG_FILE" ]; then
+            #echo '{"delaySeconds":0}' > "$CONFIG_FILE"
+          #fi
 
           echo "Waiting 3 minutes for delay trigger..."
           for i in {1..6}; do
-            echo "Refreshing repo..."
-
+            echo "Check $i → syncing latest config..."
+            
             git fetch origin main
             git reset --hard origin/main
-            
-            DELAY=$(jq -r '.delaySeconds' docs/data/release-config.json 2>/dev/null || echo 0)
-            echo "Check $i → delay = $DELAY"
+
+            if [ -f "$CONFIG_FILE" ]; then
+              DELAY=$(jq -r '.delaySeconds // 0' "$CONFIG_FILE")
+            else
+              DELAY=0
+            fi
+            #DELAY=$(jq -r '.delaySeconds' docs/data/release-config.json 2>/dev/null || echo 0)
+            #echo "Check $i → delay = $DELAY"
+
+            echo "Current delaySeconds = $DELAY"
 
             if [ "$DELAY" -gt 0 ]; then
               echo "Delay detected → sleeping $DELAY seconds"
@@ -172,11 +178,10 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No reset needed"
-            exit 0
+          else
+            git commit -m "chore: reset release delay"
+            git push origin main
           fi
-
-          git commit -m "chore: reset release delay"
-          git push origin main
 
       # # ✅ Initial Release Hold
       # - name: Initial Release Hold (dynamic delay)
