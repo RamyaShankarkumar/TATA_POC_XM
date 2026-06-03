@@ -1,4 +1,4 @@
-name: Auto Tag from Sprint Branch & Release Engine
+name: New Auto Tag from Sprint Branch & Release Engine
 
 on:
   workflow_dispatch:
