@@ -386,7 +386,7 @@ jobs:
                title: .id,
                value: .status
                })
-            ' invalid_tickets.json
+            ' invalid_tickets.json)
 
           TABLE="<table><tr><th>Ticket</th><th>Status</th></tr>$ROWS</table>"
 
