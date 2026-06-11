@@ -413,10 +413,10 @@ jobs:
                         wrap: true
                       }
                     ]
+                  }
                 }
-              }
-            ]
-          }' > payload.json
+              ]
+            }' > payload.json
 
           curl --location --request POST "$TEAMS_WEBHOOK_URL" \
             --header "Content-Type: application/json" \
