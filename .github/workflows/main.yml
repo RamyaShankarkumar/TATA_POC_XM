@@ -354,7 +354,15 @@ jobs:
 
           TICKET_COUNT=$(jq 'length' tickets.json)
           echo "ticket_count=$TICKET_COUNT" >> "$GITHUB_OUTPUT"
-      
+
+      - name: Inject test tickets (TEMP)
+        run: |
+          echo '[
+            {"id":"TEST-101","status":"In Test","link":"https://example.com/TEST-101"},
+            {"id":"TEST-102","status":"In Progress","link":"https://example.com/TEST-102"},
+            {"id":"TEST-103","status":"Done","link":"https://example.com/TEST-103"}
+          ]' > tickets.json
+        
       - name: Validate Jira Status (In-Test Check)
         id: validate
         run: |
