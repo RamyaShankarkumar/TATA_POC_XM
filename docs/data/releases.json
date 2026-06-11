@@ -1,13 +1,29 @@
 {
   "releases": [
     {
-      "tag": "release/1.0.50",
+      "tag": "release/1.0.51",
       "branch": "release/1.0.x",
-      "date": "2026-06-11T03:30:31Z",
+      "date": "2026-06-11T03:41:06Z",
       "confluence": "https://ramyashankar2611.atlassian.net//pages/viewpage.action?pageId=163842",
       "ticket_count": 0,
-      "tickets_done": 0,
-      "tickets": [],
+      "tickets_done": 1,
+      "tickets": [
+        {
+          "id": "TEST-101",
+          "status": "In Test",
+          "link": "https://example.com/TEST-101"
+        },
+        {
+          "id": "TEST-102",
+          "status": "In Progress",
+          "link": "https://example.com/TEST-102"
+        },
+        {
+          "id": "TEST-103",
+          "status": "Done",
+          "link": "https://example.com/TEST-103"
+        }
+      ],
       "epics": []
     },
     {
