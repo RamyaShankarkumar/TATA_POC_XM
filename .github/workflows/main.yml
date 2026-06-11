@@ -413,7 +413,7 @@ jobs:
                       },
                       {
                         type: "TextBlock",
-                        text: "The following tickets are not in 'In Test' state:"
+                        text: "The following tickets are not in \"In Test\" state:"
                       },
                       {
                         type: "TextBlock",
