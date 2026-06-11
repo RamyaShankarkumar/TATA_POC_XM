@@ -354,7 +354,74 @@ jobs:
 
           TICKET_COUNT=$(jq 'length' tickets.json)
           echo "ticket_count=$TICKET_COUNT" >> "$GITHUB_OUTPUT"
+      
+      - name: Validate Jira Status (In-Test Check)
+        id: validate
+        run: |
+          INVALID=$(jq '[.[] | select((.status | ascii_downcase) != "in test")]' tickets.json)
+          COUNT=$(echo "$INVALID" | jq 'length')
+          echo "invalid_count=$COUNT" >> $GITHUB_OUTPUT
+          echo "$INVALID" > invalid_tickets.json
 
+          echo "Invalid tickets count: $COUNT"
+
+      - name: Send Alert for Non In-Test Tickets
+        if: steps.validate.outputs.invalid_count != '0'
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+
+        run: |
+          TAG="${{ steps.tag.outputs.new_tag }}"
+
+          ROWS=$(jq -r '
+               .[] | 
+               "<tr><td><a href=\"\(.link)\">\(.id)</a></td><td>\(.status)</td></tr>"
+               ' invalid_tickets.json | tr '\n' ' ')
+
+          TABLE="<table><tr><th>Ticket</th><th>Status</th></tr>$ROWS</table>"
+
+          jq -n \
+            --arg tag "$TAG" \
+            --arg table "$TABLE" \
+            '{
+              type: "message",
+              attachments: [
+                {
+                  contentType: "application/vnd.microsoft.card.adaptive",
+                  content: {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    type: "AdaptiveCard",
+                    version: "1.4",
+                    body: [
+                      {
+                        type: "TextBlock",
+                        size: "Large",
+                        weight: "Bolder",
+                        text: "🚨 Release Alert: Tickets Not In Test"
+                      },
+                      {
+                        type: "TextBlock",
+                        text: ("Release Tag: " + $tag)
+                      },
+                      {
+                        type: "TextBlock",
+                        text: "The following tickets are not in 'In Test' state:"
+                      },
+                      {
+                        type: "TextBlock",
+                        text: $table,
+                        wrap: true
+                      }
+                    ]
+                }
+              }
+            ]
+          }' > payload.json
+
+          curl --location --request POST "$TEAMS_WEBHOOK_URL" \
+            --header "Content-Type: application/json" \
+            --data @payload.json
+    
       # ✅ Fetch Epic Summaries
       - name: Fetch Epic Summaries
         id: epic
