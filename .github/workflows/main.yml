@@ -381,16 +381,16 @@ jobs:
         run: |
           TAG="${{ steps.tag.outputs.new_tag }}"
 
-          ROWS=$(jq -r '
+          FACTS=$(jq -r '
                .[] | 
-               "<tr><td><a href=\"\(.link)\">\(.id)</a></td><td>\(.status)</td></tr>"
+               "{ \"title\": \"" + .id + "\", \"value\": \"" + .status + "\" }"
                ' invalid_tickets.json | tr '\n' ' ')
 
           TABLE="<table><tr><th>Ticket</th><th>Status</th></tr>$ROWS</table>"
 
           jq -n \
             --arg tag "$TAG" \
-            --arg table "$TABLE" \
+            --argjson facts "[$FACTS]" \
             '{
               type: "message",
               attachments: [
@@ -416,9 +416,8 @@ jobs:
                         text: "The following tickets are not in \"In Test\" state:"
                       },
                       {
-                        type: "TextBlock",
-                        text: $table,
-                        wrap: true
+                        type: "FactSet",
+                        facts: $facts
                       }
                     ]
                   }
